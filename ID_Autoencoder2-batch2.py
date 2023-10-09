@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
 
 import numpy as np
 import pandas as pd
@@ -12,9 +10,6 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, RepeatVector, TimeDistributed, Dense
 import matplotlib.pyplot as plt
 import os
-
-
-# In[2]:
 
 
 def load_data(filepath):
@@ -47,7 +42,7 @@ def process_data(samples):
             imag_parts.append(np.imag(cnum))
         except ValueError:
             #print(f"Malformed complex number string: {sample}")
-            continue  # error values are not important
+            continue  # I'll pass error values, not important
 
     real_parts = (real_parts - np.mean(real_parts)) / np.std(real_parts)
     imag_parts = (imag_parts - np.mean(imag_parts)) / np.std(imag_parts)
@@ -55,8 +50,6 @@ def process_data(samples):
     sequence_length = 10
     X = [list(zip(real_parts[i:i+sequence_length], imag_parts[i:i+sequence_length])) for i in range(len(real_parts) - sequence_length)]
     return np.array(X)
-
-
 
 
 def data_generator(filepath, batch_size=20, max_samples=None):
@@ -79,9 +72,9 @@ def data_generator(filepath, batch_size=20, max_samples=None):
     elif file_extension == '.dat':
         samples = []
         skip_zeros = True  # Use this flag to check if we should still skip zero lines
-        with open(filepath, 'r', errors='replace') as f:  # Reading in text mode, which should handle the decoding
+        with open(filepath, 'r', errors='replace') as f:  # reading in text mode, should handle decoding
             for line in f:
-                print('line:', line)
+                #print('line:', line)
                 try:
                     #decoded_line = line.decode('utf-8').strip()
                     decoded_line = line.strip()
@@ -89,7 +82,7 @@ def data_generator(filepath, batch_size=20, max_samples=None):
                 except UnicodeDecodeError:
                     pass
                 if not line:
-                    continue
+                    continue # don't care null lines, pass!
                 if max_samples and total_samples_processed >= max_samples:
                     break
                 samples.append(line)
@@ -153,8 +146,6 @@ jamming_detected = reconstruction_error > threshold
 
 
 
-# In[ ]:
-
 
 num_jamming_detected = np.sum(jamming_detected)
 print(f"Number of jamming sequences detected: {num_jamming_detected} out of {len(X_test)} sequences")
@@ -169,14 +160,6 @@ plt.ylabel('Reconstruction Error')
 plt.legend()
 plt.show()
 
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
 
 
 
