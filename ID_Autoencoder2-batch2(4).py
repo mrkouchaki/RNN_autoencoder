@@ -138,8 +138,6 @@ model.compile(optimizer='adam', loss='mse')
 
 batch_size = 1024
 num_pure_samples = count_lines('/home/mreza/5G accelerator/models/5G_DL_IQ_no_jamming_0924.dat')
-#Testing with csv file
-#num_pure_samples = count_lines('/home/oai/Desktop/iq_samples/5G_DL_IQ_no_jamming_0924.dat')
 
 #print('num_pure_samples:', num_pure_samples)
 
