@@ -224,7 +224,29 @@ plt.legend()
 plt.show()
 
 
+# separate reconstruction error(Img & Real)
+reconstruction_error_real = reconstruction_error[:, 0]
+reconstruction_error_imag = reconstruction_error[:, 1]
 
+# Plot for Real Part
+plt.figure(figsize=(14, 6))
+plt.plot(reconstruction_error_real, label='Reconstruction Error - Real Part', color='blue')
+plt.axhline(y=threshold, color='r', linestyle='--', label='Threshold')
+plt.title('Reconstruction Error for Real Part with Threshold')
+plt.xlabel('Sequence Number')
+plt.ylabel('Reconstruction Error')
+plt.legend()
+plt.show()
+
+# Plot for Imaginary Part
+plt.figure(figsize=(14, 6))
+plt.plot(reconstruction_error_imag, label='Reconstruction Error - Imaginary Part', color='orange')
+plt.axhline(y=threshold, color='r', linestyle='--', label='Threshold')
+plt.title('Reconstruction Error for Imaginary Part with Threshold')
+plt.xlabel('Sequence Number')
+plt.ylabel('Reconstruction Error')
+plt.legend()
+plt.show()
 
 # In[2]:
 
