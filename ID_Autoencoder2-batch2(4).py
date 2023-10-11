@@ -267,15 +267,31 @@ plt.show()
 avg_real = np.mean(X_chunk_test, axis=1)[:, 0]
 avg_imag = np.mean(X_chunk_test, axis=1)[:, 1]
 
+last_errors = np.mean(reconstruction_errors[-len(X_chunk_test):], axis=1)
+
+print("Shape of avg_real:", avg_real.shape)
+print("Shape of avg_imag:", avg_imag.shape)
+print("Shape of last_errors:", len(last_errors))
+
+
 plt.figure(figsize=(14, 6))
-plt.scatter(avg_real, reconstruction_error, label='Real Part')
-plt.scatter(avg_imag, reconstruction_error, label='Imaginary Part')
+plt.scatter(avg_real, last_errors, label='Real Part', alpha=0.5)
 plt.axhline(y=threshold, color='r', linestyle='--', label='Threshold')
-plt.title('Reconstruction Error vs. Average Real and Imaginary Parts')
+plt.title('Reconstruction Error vs. Average Real Part')
 plt.xlabel('Average Amplitude')
 plt.ylabel('Reconstruction Error')
 plt.legend()
 plt.show()
+
+plt.figure(figsize=(14, 6))
+plt.scatter(avg_imag, last_errors, label='Imaginary Part', alpha=0.5)
+plt.axhline(y=threshold, color='r', linestyle='--', label='Threshold')
+plt.title('Reconstruction Error vs. Average Imaginary Part')
+plt.xlabel('Average Amplitude')
+plt.ylabel('Reconstruction Error')
+plt.legend()
+plt.show()
+
 
 
 # In[ ]:
