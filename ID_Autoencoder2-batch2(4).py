@@ -136,12 +136,12 @@ model.compile(optimizer='adam', loss='mse')
 
 # first I need to train pure data batch by batch
 
-batch_size = 1024
+batch_size = 500
 num_pure_samples = count_lines('/home/mreza/5G accelerator/models/5G_DL_IQ_no_jamming_0924.dat')
 
 #print('num_pure_samples:', num_pure_samples)
 
-max_train_samples = 100000  # I limit the train or can put None for whole data
+max_train_samples = 1000000  # I limit the train or can put None for whole data
 train_steps = (min(num_pure_samples, max_train_samples) if 
                max_train_samples else num_pure_samples) // (batch_size * sequence_length)
 
@@ -157,7 +157,7 @@ combined_gen_instance = DataGenerator('/home/mreza/5G accelerator/models/5G_DL_I
                                       batch_size=batch_size, sequence_length=sequence_length, 
                                       for_training=False)
 
-num_predictions = 10000  # or any desired number
+num_predictions = 500  # or any desired number
 reconstruction_errors = []
 for _ in range(num_predictions):
     print('prediction loop started-loop:', _)
