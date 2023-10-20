@@ -143,7 +143,7 @@ num_pure_samples = count_lines('/home/mreza/5G accelerator/models/5G_DL_IQ_no_ja
 
 #print('num_pure_samples:', num_pure_samples)
 
-max_train_samples = 100000  # I limit the train or can put None for whole data
+max_train_samples = None  # I limit the train or can put None for whole data
 train_steps = (min(num_pure_samples, max_train_samples) if 
                max_train_samples else num_pure_samples) // (batch_size * sequence_length)
 
@@ -153,11 +153,31 @@ train_gen_instance = DataGenerator('/home/mreza/5G accelerator/models/5G_DL_IQ_n
                                    max_samples=max_train_samples, for_training=True)
 
 #print('train_gen_instance:', train_gen_instance)
-model.fit(train_gen_instance, steps_per_epoch=train_steps, epochs=10, verbose=1)
+#model.fit(train_gen_instance, steps_per_epoch=train_steps, epochs=10, verbose=1)
+
+
+# Modify training loop
+num_epochs = 10  # You can adjust the number of epochs as needed
+steps_per_epoch = train_steps  # Assuming one epoch processes all the data
+for epoch in range(num_epochs):
+    print(f"Epoch {epoch + 1}/{num_epochs}")
+    train_gen_instance.reset()  # Reset the generator at the beginning of each epoch
+    for step in range(steps_per_epoch):
+        try:
+            X_chunk, Y_chunk = next(train_gen_instance)
+        except StopIteration:
+            train_gen_instance.reset()  # Reset the generator when it runs out of data
+            X_chunk, Y_chunk = next(train_gen_instance)
+
+        model.train_on_batch(X_chunk, Y_chunk)
+        print(f"Step {step + 1}/{steps_per_epoch}", end='\r')
+    print()
+
 
 combined_gen_instance = DataGenerator('/home/mreza/5G accelerator/models/5G_DL_IQ_with_periodic_jamming_0928_02.dat', 
                                       batch_size=batch_size, sequence_length=sequence_length, 
                                       for_training=False)
+
 
 num_predictions = 100  # or any desired number
 reconstruction_errors = []
